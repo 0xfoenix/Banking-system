@@ -12,7 +12,7 @@ Helper functions to load and write to JSON and hash pin
 def read_json():
     try:
         with open("utils.json", "r") as f:
-            data = json.load(f)
+            data = json.loads(f)
             return data
     except FileNotFoundError:
         data = {"users":{
@@ -259,6 +259,7 @@ class Bank():
             creation_time = datetime.now()
             transaction_history = []
             account_number = data["next_account_number"]
+            acc_no = str(account_number)
            
             new_data = {
                 
@@ -269,7 +270,7 @@ class Bank():
             }
 
             dict_data = {
-                account_number : new_data
+                acc_no : new_data
             }
 
             data["users"].update(dict_data)
