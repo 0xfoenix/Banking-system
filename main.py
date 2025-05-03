@@ -257,6 +257,8 @@ class Bank():
     
         if "trial" not in st.session_state:
             st.session_state.trial = 0
+        
+        if "max_trials" not in st.session_state:
             st.session_state.max_trials = 3
         
         if st.session_state.trial >= st.session_state.max_trials:
@@ -269,7 +271,7 @@ class Bank():
                     return "Login successful"
                 else:
                     st.session_state.trial += 1
-                    remaining = st.session_state.max_trials - st.session_state.trial
+                    remaining = (st.session_state.max_trials - st.session_state.trial)
                     return f"Wrong Pin. You have {remaining} left"
             
         return "No account number found. Check the account number or Create an account"
