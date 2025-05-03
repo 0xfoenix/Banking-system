@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-from main import Bank
+import json
+from main import Bank, hash_pin
 
 st.title("Welcome to the Royal Bank")
     
@@ -39,7 +40,7 @@ if function_option == "Create New Account":
     with st.form("Create Account"):
         name =  st.text_input("Full name", placeholder="Please enter your full name")
         deposit =st.number_input("Initial Deposit", placeholder="Please input the amount you're ready to deposit", min_value=100)
-        pin = st.text_input("Pin", placeholder="Please enter your pin", max_chars=4)
+        input_pin = st.text_input("Pin", placeholder="Please enter your pin", max_chars=4)
         phone = st.text_input("Phone_number", placeholder="Please input your number")
         address = st.text_input("Address", placeholder="Please input your address")
         next_of_kin = st.text_input("Next of Kin(Optional)", placeholder="Please add the name of your next of kin")
@@ -53,7 +54,8 @@ if function_option == "Create New Account":
        }
 
         if st.form_submit_button("Create Account"):
-            if name and deposit and pin and contact_info:
+            if name and deposit and input_pin and contact_info:
+               pin = hash_pin(input_pin)
                result = st.session_state.bank.create_account(name, deposit, pin, contact_info)
                st.success(result)
             else:
@@ -64,18 +66,19 @@ elif function_option == "Login":
     st.header("Login Page")
         
     account_number = st.number_input("Account Number", placeholder="Please enter your account number", step=1)
-    pin = st.text_input("pin", placeholder="Please input your pin", max_chars=4)
+    input_pin = st.text_input("pin", placeholder="Please input your pin", max_chars=4)
     
     trial = st.session_state.trial
     max_trials = st.session_state.max_trials
 
 
     if st.button("Login"):
-        if account_number and pin:
-            if len(pin) == 4:
+        if account_number and input_pin:
+            if len(input_pin) == 4:
                 for account in st.session_state.bank.accounts:
                     if trial <= (max_trials - 1):
                         if account_number == account.account_number:
+                            pin = hash_pin(input_pin)
                             result = st.session_state.bank.authenticate(account_number, pin)
                             st.success(result)
 
@@ -243,20 +246,20 @@ elif function_option == "Update account information":
 # Change PIN
 elif function_option == "Change PIN":
     if st.session_state.account_number:
-        new_pin = st.text_input("New Pin", placeholder="Please input your new pin", max_chars=4)
-        old_pin = st.text_input("Old Pin", placeholder="Please input your current pin", max_chars=4)
+        i_new_pin = st.text_input("New Pin", placeholder="Please input your new pin", max_chars=4)
+        i_old_pin = st.text_input("Old Pin", placeholder="Please input your current pin", max_chars=4)
 
         if st.button("Change PIN"):
             for account in st.session_state.bank.accounts:
                 if st.session_state.account_number == account.account_number:
-                        if old_pin == account.pin:
-                            if new_pin:
-                                result = account.change_pin(old_pin, new_pin)
-                                st.success(result)
-                            else:
-                                st.info("Please input pin")
+                        if i_old_pin and i_new_pin:
+                            old_pin = hash_pin(i_old_pin)
+                            new_pin = hash_pin(i_new_pin)
+                            result = account.change_pin(old_pin, new_pin)
+                            st.success(result)
                         else:
-                            st.warning("Old pin same as new pin. Please change")
+                            st.info("Please input pin")
+                        
                 else:
                     st.info("Account not found. Please create an account or log in")
     else:
@@ -269,6 +272,7 @@ elif function_option == "Logout":
         if st.button("Logout"):
             st.session_state.login = False
             st.session_state.account_number = None
+            st.rerun()
     else:
         st.info("Please login or create an account")
             
