@@ -103,7 +103,7 @@ class Account():
         returns formatted string detailing amount withdrawn
         '''
 
-        if amount <= (self.balance - 1000):
+        if amount <= (self.balance - 100):
             new_balance = self.balance - amount
             self.balance = new_balance
 
