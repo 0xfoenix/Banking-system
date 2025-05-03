@@ -70,11 +70,11 @@ elif function_option == "Login":
     max_trials = st.session_state.max_trials
 
 
-    if trial <= (max_trials - 1):
-        if st.button("Login"):
-            if account_number and pin:
-                if len(pin) == 4:
-                    for account in st.session_state.bank.accounts:
+    if st.button("Login"):
+        if account_number and pin:
+            if len(pin) == 4:
+                for account in st.session_state.bank.accounts:
+                    if trial <= (max_trials - 1):
                         if account_number == account.account_number:
                             result = st.session_state.bank.authenticate(account_number, pin)
                             st.success(result)
@@ -86,13 +86,14 @@ elif function_option == "Login":
                                 st.rerun()
                         else:
                             st.info("Account not found. Please create an account or check input")
-                else:
-                    st.info("Pin must be a minimum of 4 digits")
+                    else:
+                        st.warning("Please refer to Support ")
             else:
-                st.info("Please input the necessary details to login")
+                st.info("Pin must be a minimum of 4 digits")
+        else:
+            st.info("Please input the necessary details to login")
             
-    else:
-        st.warning("Please refer to Support ")
+    
 
                             
     
