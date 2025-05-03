@@ -76,7 +76,7 @@ elif function_option == "Login":
                         st.info("Account not found. Please create an account or check input")
 
             else:
-                st.info("Please input the nexessary details to login")
+                st.info("Please input the necessary details to login")
             
     else:
         st.warning("Please refer to customer care")
