@@ -10,7 +10,7 @@ import hashlib
 Helper functions to load and write to JSON and hash pin
 '''
 def read_json():
-    with open("utils.txt", "r") as f:
+    with open("utils.json", "r") as f:
         data = json.load(f)
         return data
 
@@ -461,13 +461,13 @@ class Bank():
         returns formatted string detailing filename
         '''
 
-        
+
         if not filename:
             return "Please input a valid filename"
         
         try:
             account_df = pd.read_csv(f"{filename}.csv")
-            account_data = []
+            self.accounts = []
 
             for _, row in account_df.iterrows():
                 account = Account(row['Name'], row['Acc_no'], row['Owner\'s Name'],
