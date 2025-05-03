@@ -83,7 +83,7 @@ elif function_option == "Login":
                                 st.session_state.login = True
                                 st.session_state.account_number = account_number
                             
-                            st.rerun()
+                                st.rerun()
                         else:
                             st.info("Account not found. Please create an account or check input")
                 else:
