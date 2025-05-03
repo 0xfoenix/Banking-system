@@ -5,13 +5,21 @@ from main import Bank
 st.title("Welcome to the Royal Bank")
     
 # Initialize bank
-if "bank" not in st.session_state:
+if 'bank' not in st.session_state:
     st.session_state.bank = Bank("The Royal Bank")
     
 # Initialize login and account number
-if "login" not in st.session_state:
+if 'login' not in st.session_state:
     st.session_state.login = False
     st.session_state.account_number = None
+
+# Initialize trial
+if 'trial' not in st.session_state:
+    st.session_state.trial = 0
+
+# Initialize max trials
+if 'max_trials' not in st.session_state:
+    st.session_state.max_trials = 2
 
 if not st.session_state.login:
     st.sidebar.title("Home Page Functions")
@@ -59,9 +67,10 @@ elif function_option == "Login":
     pin = st.text_input("pin", placeholder="Please input your pin", max_chars=4)
     
     trial = st.session_state.trial
+    max_trials = st.session_state.max_trials
 
 
-    if trial <= 2:
+    if trial <= max_trials:
         if st.button("Login"):
             if account_number and pin:
                 for account in st.session_state.bank.accounts:
