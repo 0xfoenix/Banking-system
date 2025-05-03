@@ -12,7 +12,7 @@ Helper functions to load and write to JSON and hash pin
 def read_json():
     try:
         with open("utils.json", "r") as f:
-            data = json.loads(f)
+            data = json.load(f)
             return data
     except FileNotFoundError:
         data = {"users":{
@@ -21,11 +21,12 @@ def read_json():
         "next_account_number": 1}
 
         with open("utils.json", "w") as f:
-            json.dumps(data, indent=4, sort_keys = True)
+            json.dumps(data, f, indent=4, sort_keys = True)
+            return data
 
 def write_json(data):
     with open("utils.json", "w") as f:
-        json.dumps(data, indent=4, sort_keys=True)
+        json.dumps(data, f, indent=4, sort_keys=True)
 
 def hash_pin(pin):
     b_pin = f"{pin}".encode()
