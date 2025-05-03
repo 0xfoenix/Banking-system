@@ -78,11 +78,12 @@ elif function_option == "Login":
                         if account_number == account.account_number:
                             result = st.session_state.bank.authenticate(account_number, pin)
                             st.success(result)
-                            st.rerun()
 
                             if result == "Login successful":
                                 st.session_state.login = True
                                 st.session_state.account_number = account_number
+                            
+                            st.rerun()
                         else:
                             st.info("Account not found. Please create an account or check input")
                 else:
