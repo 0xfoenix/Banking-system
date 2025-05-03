@@ -254,9 +254,10 @@ class Bank():
 
         returns formatted string with account_number
         '''
-
+    
+        data = read_json()
         if owner_name and initial_deposit and pin and contact_info:
-            data = read_json()
+            
             creation_time = datetime.now()
             transaction_history = []
             account_number = data["next_account_number"]
