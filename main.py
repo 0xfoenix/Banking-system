@@ -245,7 +245,7 @@ class Bank():
             st.session_state.trial = 0
         
     if "max_trials" not in st.session_state:
-        st.session_state.max_trials = 2
+        st.session_state.max_trials = 3
     
     # Authentication
     def authenticate(self, account_number, pin):
