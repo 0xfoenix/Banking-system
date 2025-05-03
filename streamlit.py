@@ -15,8 +15,8 @@ if "login" not in st.session_state:
 
 if not st.session_state.login:
     st.sidebar.title("Home Page Functions")
-    function_option = st.sidebar.selectbox("Home Page Functions", "Create New Account",
-                                               "Login", "About/Help Information")
+    function_option = st.sidebar.selectbox("Home Page Functions", ["Create New Account",
+                                               "Login", "About/Help Information"])
 else:
     st.sidebar.title("Main Bank Functions")
     function_option = st.sidebar.selectbox("What do you want to do today?",
