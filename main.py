@@ -183,14 +183,6 @@ class Bank():
         self.name = name
         self.accounts = []
         self.next_account_number = 1
-        
-        
-    def update_next_account_number(self):
-        '''
-        Update next account number: Updates the next account number after an instance is created
-
-        returns self.next_account_number
-        '''
         if self.accounts and len(self.accounts) > 0:
             self.next_account_number = max([a.account_number for a in self.accounts]) + 1
 
@@ -228,9 +220,9 @@ class Bank():
                 )
 
             self.accounts.append(accounts)
-            self.update_next_account_number()
+            self.next_account_number += 1
 
-            return f"Account with account number -{account_number} successfully created"
+            return f"Account with account number {account_number:08d} successfully created"
 
     # Find account
     def find_account(self, account_number):
