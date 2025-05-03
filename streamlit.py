@@ -61,7 +61,7 @@ elif function_option == "Login":
     trial = st.session_state.trial
 
 
-    if trial <= 3:
+    if trial <= 2:
         if st.button("Login"):
             if account_number and pin:
                 for account in st.session_state.bank.accounts:

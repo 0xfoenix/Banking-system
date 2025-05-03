@@ -245,7 +245,7 @@ class Bank():
             st.session_state.trial = 0
         
     if "max_trials" not in st.session_state:
-        st.session_state.max_trials = 3
+        st.session_state.max_trials = 2
     
     # Authentication
     def authenticate(self, account_number, pin):
@@ -274,7 +274,7 @@ class Bank():
                 else:
                     st.session_state.trial += 1
                     remaining = (st.session_state.max_trials - st.session_state.trial)
-                    return f"Wrong Pin. You have {remaining} left"
+                    return f"Wrong Pin. You have {remaining} chances left"
             
         return "No account number found. Check the account number or Create an account"
         
