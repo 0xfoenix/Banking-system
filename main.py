@@ -262,7 +262,7 @@ class Bank():
         '''
               
 
-        if st.session_state.trial >= st.session_state.max_trials:
+        if st.session_state.trial >= (st.session_state.max_trials - 1):
             return "You have exceeded your login attempts. Please reach out to customer care"
         
         for account in self.accounts:
