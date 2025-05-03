@@ -59,6 +59,7 @@ elif function_option == "Login":
     pin = st.text_input("pin", placeholder="Please input your pin", max_chars=4)
     if "trial" not in st.session_state:
         st.session_state.trial = 0
+        st.session_state.max_trials = 3
 
     trial = st.session_state.trial
 
