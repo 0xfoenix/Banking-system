@@ -259,13 +259,7 @@ class Bank():
             creation_time = datetime.now()
             transaction_history = []
             account_number = data["next_account_number"]
-
-            # hash function block
-            '''
-            Function to hash pin and store it securely
-            '''
-
-            
+           
             new_data = {
                 
                 # stores the pin hash  and login attempts of the account number
@@ -279,10 +273,6 @@ class Bank():
             }
 
             data["users"].update(dict_data)
-
-            # Writing to file
-            write_json(data)
-
 
             accounts = Account(
                 owner_name,
