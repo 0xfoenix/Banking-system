@@ -63,7 +63,7 @@ if function_option == "Create New Account":
 elif function_option == "Login":
     st.header("Login Page")
         
-    account_number = st.number_input("Account Number", placeholder="Please enter your account number")
+    account_number = st.number_input("Account Number", placeholder="Please enter your account number", step=1)
     pin = st.text_input("pin", placeholder="Please input your pin", max_chars=4)
     
     trial = st.session_state.trial
@@ -73,22 +73,24 @@ elif function_option == "Login":
     if trial <= (max_trials - 1):
         if st.button("Login"):
             if account_number and pin:
-                for account in st.session_state.bank.accounts:
-                    if account_number == account.account_number:
-                        result = st.session_state.bank.authenticate(account_number, pin)
-                        st.success(result)
+                if len(pin) == 4:
+                    for account in st.session_state.bank.accounts:
+                        if account_number == account.account_number:
+                            result = st.session_state.bank.authenticate(account_number, pin)
+                            st.success(result)
 
-                        if result == "Login successful":
-                            st.session_state.login = True
-                            st.session_state.account_number = account_number
-                    else:
-                        st.info("Account not found. Please create an account or check input")
-
+                            if result == "Login successful":
+                                st.session_state.login = True
+                                st.session_state.account_number = account_number
+                        else:
+                            st.info("Account not found. Please create an account or check input")
+                else:
+                    st.info("Pin must be a minimum of 4 digits")
             else:
                 st.info("Please input the necessary details to login")
             
     else:
-        st.warning("Please refer to customer care")
+        st.warning("Please refer to Support ")
 
                             
     
