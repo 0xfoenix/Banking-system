@@ -1,9 +1,33 @@
 import streamlit as st
 from datetime import datetime
 import pandas as pd
+import json
 import uuid
 import time
+import hashlib
 
+'''
+Helper functions to load and write to JSON and hash pin
+'''
+def read_json():
+    with open("utils.txt", "r") as f:
+        data = json.load(f)
+        return data
+
+def write_json(data):
+    with open("utils.json", "w") as f:
+        json.dumps(data, indent=4, sort_keys=True)
+
+def hash_pin(pin):
+    b_pin = f"{pin}".encode()
+    sha256 = hashlib.sha256()
+    sha256.update(b_pin)
+    pin_hash = sha256.hexdigest()
+    return pin_hash
+
+'''
+Initializing Classes
+'''
 # Create Transaction class
 class Transaction():
     def __init__ (self, transaction_id, timestamp, transaction_type, amount,
@@ -25,6 +49,8 @@ class Transaction():
 
         returns a dictionary of transaction details
         '''
+
+
         if self.transaction_type == "Transfer":
             receipt = {
                 "Transaction Id": self.transaction_id,
@@ -49,6 +75,8 @@ class Transaction():
 
             return formatted string
         '''
+
+
         account.transaction_history.append(transaction)
         return "Transaction saved successfully"
         
@@ -57,11 +85,10 @@ class Transaction():
 # Create Bank Account
 class Account():
     def __init__(self, account_name, account_number, balance, 
-                 pin, contact_info, creation_date, transaction_history=None):
+                  contact_info, creation_date, transaction_history=None):
         self.account_name = account_name
         self.account_number = account_number
         self.balance = balance
-        self.pin = pin
         self.contact_info = contact_info
         self.creation_date = creation_date
         self.transaction_history = transaction_history if transaction_history is not None else []
@@ -130,6 +157,7 @@ class Account():
 
         returns formatted text detailing account_balance
         '''
+
         return f"You have ${self.balance} in your account"
     
     # Change pin
@@ -146,11 +174,25 @@ class Account():
 
         returns string
         '''
-        if new_pin == old_pin:
-            return f"Same pin as previous"
-        else:
-            self.pin = new_pin
-            return "Pin changed successfully"
+
+        account = str(self.account_number)
+        data = read_json()
+        for account in data["users"].keys():
+            if old_pin == data["users"]["account"]["pin"]:
+                if new_pin == old_pin:
+                    return f"Same pin as previous"
+                else:            
+                    try:   
+                        if account:         
+                            data["users"]["account"]["pin"] = new_pin
+                            write_json(data)
+                            return "Pin changed successfully"
+                        else:
+                            return "Account not found. Please create an account"
+                    except Exception as e:
+                        return f"Error accessing key {e}"
+            else:
+                return "Old pin incorrect. Try again"
         
     def update_contact_info(self,new_info):
         '''
@@ -161,6 +203,7 @@ class Account():
 
         returns formatted string
         '''
+
         if new_info:
             self.contact_info = new_info
             return f"Contact info updated successfully"
@@ -171,6 +214,7 @@ class Account():
 
         returns a list of transactions
         '''
+
         if self.transaction_history:
             return self.transaction_history
         else:
@@ -182,9 +226,6 @@ class Bank():
     def __init__(self, name):
         self.name = name
         self.accounts = []
-        self.next_account_number = 1
-        if self.accounts and len(self.accounts) > 0:
-            self.next_account_number = max([a.account_number for a in self.accounts]) + 1
 
     # Create Account
     def create_account(self, owner_name, initial_deposit, pin, contact_info):
@@ -205,22 +246,48 @@ class Bank():
         '''
 
         if owner_name and initial_deposit and pin and contact_info:
+            data = read_json()
             creation_time = datetime.now()
             transaction_history = []
-            account_number = self.next_account_number
+            account_number = data["next_account_number"]
+
+            # hash function block
+            '''
+            Function to hash pin and store it securely
+            '''
+
             
+            new_data = {
+                
+                # stores the pin hash  and login attempts of the account number
+                
+                "pin": pin,
+                "attempts": 0
+            }
+
+            dict_data = {
+                account_number : new_data
+            }
+
+            data["users"].update(dict_data)
+
+            # Writing to file
+            write_json(data)
+
+
             accounts = Account(
                 owner_name,
                 account_number,
                 initial_deposit,
-                pin,
                 contact_info,
                 creation_time,
                 transaction_history
                 )
 
             self.accounts.append(accounts)
-            self.next_account_number += 1
+            data["next_account_number"] = account_number + 1
+
+            write_json(data)
 
             return f"Account with account number {account_number:08d} successfully created"
 
@@ -236,13 +303,12 @@ class Bank():
     returns the matched Account instance otherwise None
 
     '''
+        
+
         for account in self.accounts:
             if account_number == account.account_number:
                 return account
         return None
-    
-    if "trial" not in st.session_state:
-            st.session_state.trial = 0
         
     if "max_trials" not in st.session_state:
         st.session_state.max_trials = 3
@@ -260,19 +326,26 @@ class Bank():
         
         returns formatted text
         '''
-              
 
-        if st.session_state.trial >= (st.session_state.max_trials - 1):
+        data = read_json()
+        account = str(account_number)
+        saved_pin = data["users"][account]["pin"]
+        trials = data["users"][account]["attempts"]
+
+        if trials >= (st.session_state.max_trials - 1):
             return "You have exceeded your login attempts. Please reach out to customer care"
         
         for account in self.accounts:
             if account_number == account.account_number: 
-                if pin == account.pin:
-                    st.session_state.trial = 0
+                if pin == saved_pin:
+                    data["users"][account]["attempts"] = 0
+
+                    write_json(data)
                     return "Login successful"
                 else:
-                    st.session_state.trial += 1
-                    remaining = (st.session_state.max_trials - st.session_state.trial)
+                    data["users"][account]["attempts"] += 1
+                    remaining = (st.session_state.max_trials - trials)
+                    write_json(data)
                     return f"Wrong Pin. You have {remaining} chances left"
             
         return "No account number found. Check the account number or Create an account"
@@ -294,6 +367,7 @@ class Bank():
         
         returns formatted string detailing amount transferred
         '''
+
         source_account = self.find_account(from_account)
         destination_account = self.find_account(to_account)
 
@@ -360,7 +434,6 @@ class Bank():
                     "Acc_no": account.account_number,
                     "Owner's Name": account.owner_name,
                     "Account Balance": account.balance,
-                    "Account Pin": account.pin,
                     "Other Info": account.contact_info,
                     "Created On": account.creation_date,
                     "Transaction History": account.transaction_history
@@ -387,6 +460,8 @@ class Bank():
         
         returns formatted string detailing filename
         '''
+
+        
         if not filename:
             return "Please input a valid filename"
         
@@ -396,7 +471,7 @@ class Bank():
 
             for _, row in account_df.iterrows():
                 account = Account(row['Name'], row['Acc_no'], row['Owner\'s Name'],
-                                  row['Account Balance'], row['Account Pin'], row['Other Info'],
+                                  row['Account Balance'],  row['Other Info'],
                                   row['Created On'], row['Transaction History'])
                 
                 self.accounts.append(account)
