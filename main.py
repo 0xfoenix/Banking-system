@@ -245,7 +245,7 @@ class Bank():
             st.session_state.trial = 0
         
     if "max_trials" not in st.session_state:
-        st.session_state.max_trials = 3
+        st.session_state.max_trials = 2
     
     # Authentication
     def authenticate(self, account_number, pin):
@@ -260,8 +260,7 @@ class Bank():
         
         returns formatted text
         '''
-        
-        
+              
 
         if st.session_state.trial >= st.session_state.max_trials:
             return "You have exceeded your login attempts. Please reach out to customer care"
