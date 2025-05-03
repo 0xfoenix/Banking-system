@@ -241,6 +241,12 @@ class Bank():
                 return account
         return None
     
+    if "trial" not in st.session_state:
+            st.session_state.trial = 0
+        
+    if "max_trials" not in st.session_state:
+        st.session_state.max_trials = 3
+    
     # Authentication
     def authenticate(self, account_number, pin):
         '''
@@ -254,26 +260,20 @@ class Bank():
         
         returns formatted text
         '''
-    
-        if "trial" not in st.session_state:
-            st.session_state.trial = 0
         
-        if "max_trials" not in st.session_state:
-            st.session_state.max_trials = 3
         
-        trial = st.session_state.trial
 
-        if trial >= st.session_state.max_trials:
+        if st.session_state.trial >= st.session_state.max_trials:
             return "You have exceeded your login attempts. Please reach out to customer care"
         
         for account in self.accounts:
             if account_number == account.account_number: 
                 if pin == account.pin:
-                    trial = 0
+                    st.session_state.trial = 0
                     return "Login successful"
                 else:
-                    trial += 1
-                    remaining = (st.session_state.max_trials - trial)
+                    st.session_state.trial += 1
+                    remaining = (st.session_state.max_trials - st.session_state.trial)
                     return f"Wrong Pin. You have {remaining} left"
             
         return "No account number found. Check the account number or Create an account"
