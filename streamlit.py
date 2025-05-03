@@ -70,7 +70,7 @@ elif function_option == "Login":
     max_trials = st.session_state.max_trials
 
 
-    if trial <= max_trials:
+    if trial <= (max_trials - 1):
         if st.button("Login"):
             if account_number and pin:
                 for account in st.session_state.bank.accounts:
