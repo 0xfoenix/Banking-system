@@ -63,7 +63,7 @@ elif function_option == "Login":
     trial = st.session_state.trial
 
     if trial <= 3:
-        if st.submit_button("Login"):
+        if st.button("Login"):
             if account_number and pin:
                 for account in st.session_state.bank.accounts:
                     if account_number == account.account_number:
@@ -107,7 +107,7 @@ if function_option == "Deposit":
         amount = st.number_input("Amount", placeholder="Input the amount you want to deposit", min_value=100)
         
         for account in st.session_state.bank.accounts:
-            if st.submit_button("Deposit"):
+            if st.button("Deposit"):
                 if account.account_number == st.session_state.account_number:
                     if amount:
                         if amount >= 100:
@@ -129,7 +129,7 @@ elif function_option == "Withdraw":
         amount = st.number_input("Amount", placeholder="Input the amount you wish to withdraw", min_value=10)
 
         for account in st.session_state.bank.accounts:
-            if st.submit_button("Withdraw"):
+            if st.button("Withdraw"):
                 if account.account_number == st.session_state.account_number:
                     if amount:
                         if amount >=10:
@@ -151,7 +151,7 @@ elif function_option == "Transfer":
         amount = st.number_input("Amount", placeholder="Input the amount you want to transfer")
         s_account = st.session_state.account_number
             
-        if st.submit_button("Transfer"):
+        if st.button("Transfer"):
             if d_account and amount:
                 for account in st.session_state.bank.accounts:
                     if d_account == account.account_number:
@@ -170,7 +170,7 @@ elif function_option == "Transfer":
 # Check balance function
 elif function_option == "Check Balance":
     if st.session_state.account_number:
-        if st.submit_button("Check Balance"):
+        if st.button("Check Balance"):
             for account in st.session_state.bank.accounts:
                 if account.account_number == st.session_state.account_number:
                     result = account.check_balance()
@@ -184,7 +184,7 @@ elif function_option == "Check Balance":
 # View Transaction history
 elif function_option == "View Transaction history":
     if st.session_state.account_number:
-        if st.submit_button("View tx history"):
+        if st.button("View tx history"):
             for account in st.session_state.bank.accounts:
                 if account.account_number == st.session_state.account_number:
                     tx_data = account.get_transaction_history()
@@ -233,7 +233,7 @@ elif function_option == "Change PIN":
         new_pin = st.text_input("New Pin", placeholder="Please input your new pin", max_chars=4)
         old_pin = st.text_input("Old Pin", placeholder="Please input your current pin", max_chars=4)
 
-        if st.submit_button("Change PIN"):
+        if st.button("Change PIN"):
             for account in st.session_state.bank.accounts:
                 if st.session_state.account_number == account.account_number:
                         if old_pin == account.pin:
