@@ -58,7 +58,10 @@ elif function_option == "Login":
     account_number = st.number_input("Account Number", placeholder="Please enter your account number")
     pin = st.text_input("pin", placeholder="Please input your pin", max_chars=4)
 
-    trial = st.session_state.trial
+    if st.session_state.trial:
+        trial = st.session_state.trial
+    else:
+        trial = 0
 
     if trial <= 3:
         if st.button("Login"):
