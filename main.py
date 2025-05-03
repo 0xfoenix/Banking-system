@@ -10,9 +10,18 @@ import hashlib
 Helper functions to load and write to JSON and hash pin
 '''
 def read_json():
-    with open("utils.json", "r") as f:
-        data = json.load(f)
-        return data
+    try:
+        with open("utils.json", "r") as f:
+            data = json.load(f)
+            return data
+    except FileNotFoundError:
+        data = {"users":{
+
+        },
+        "next_account_number": 1}
+
+        with open("utils.json", "w") as f:
+            json.dumps(data, indent=4, sort_keys = True)
 
 def write_json(data):
     with open("utils.json", "w") as f:
