@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from main import Account, Transaction, Bank
+from main import Bank
 
 st.title("Welcome to the Royal Bank")
     
