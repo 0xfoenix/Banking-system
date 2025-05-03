@@ -21,12 +21,12 @@ def read_json():
         "next_account_number": 1}
 
         with open("utils.json", "w") as f:
-            json.dumps(data, f, indent=4, sort_keys = True)
+            json.dump(data, f, indent=4, sort_keys = True)
             return data
 
 def write_json(data):
     with open("utils.json", "w") as f:
-        json.dumps(data, f, indent=4, sort_keys=True)
+        json.dump(data, f, indent=4, sort_keys=True)
 
 def hash_pin(pin):
     b_pin = f"{pin}".encode()
