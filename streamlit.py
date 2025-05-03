@@ -19,7 +19,7 @@ if 'trial' not in st.session_state:
 
 # Initialize max trials
 if 'max_trials' not in st.session_state:
-    st.session_state.max_trials = 2
+    st.session_state.max_trials = 3
 
 if not st.session_state.login:
     st.sidebar.title("Home Page Functions")
