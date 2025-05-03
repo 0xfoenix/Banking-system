@@ -78,6 +78,7 @@ elif function_option == "Login":
                         if account_number == account.account_number:
                             result = st.session_state.bank.authenticate(account_number, pin)
                             st.success(result)
+                            st.rerun()
 
                             if result == "Login successful":
                                 st.session_state.login = True
