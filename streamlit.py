@@ -66,7 +66,7 @@ elif function_option == "Login":
     st.header("Login Page")
         
     account_number = st.number_input("Account Number", placeholder="Please enter your account number", step=1)
-    input_pin = st.text_input("pin", placeholder="Please input your pin", type="password" max_chars=4)
+    input_pin = st.text_input("pin", placeholder="Please input your pin", type="password", max_chars=4)
     
     trial = st.session_state.trial
     max_trials = st.session_state.max_trials
