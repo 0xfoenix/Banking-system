@@ -6,27 +6,54 @@ import uuid
 import time
 import hashlib
 
+user_file = "users.json"
+pin_file = "utils.json"
+
 '''
 Helper functions to load and write to JSON and hash pin
 '''
-def read_json():
-    try:
-        with open("utils.json", "r") as f:
-            data = json.load(f)
-            return data
-    except FileNotFoundError:
-        data2 = {"users":{
+def read_json(file):
+    if file == "utils.json":
+        try:
+            with open("utils.json", "r") as f:
+                data = json.load(f)
+                return data
+        except FileNotFoundError:
+            data = {"users":{
 
-        },
-        "next_account_number": 1}
+            },
+            "next_account_number": 1}
 
+            with open("utils.json", "w") as f:
+                json.dump(data, f, indent=4, sort_keys = True)
+                return data
+    elif file == "users.json":
+        try:
+            with open("users.json", "r") as f:
+                data = json.load(f)
+                return data
+        except FileNotFoundError:
+            data = {"users":{
+
+            },
+            "next_account_number": 1}
+
+            with open("users.json", "w") as f:
+                json.dump(data, f, indent=4, sort_keys = True)
+                return data
+    else:
+        return "File not found"
+
+
+def write_json(data, filename):
+    if filename == "utils.json":
         with open("utils.json", "w") as f:
-            json.dump(data2, f, indent=4, sort_keys = True)
-            return data2
-
-def write_json(data):
-    with open("utils.json", "w") as f:
-        json.dump(data, f, indent=4, sort_keys=True)
+            json.dump(data, f, indent=4, sort_keys=True)
+    elif filename == "users.json":
+        with open("users.json", "w") as f:
+            json.dump(data, f, indent=4, sort_keys=True)
+    else:
+        return "File not found"
         
 
 def hash_pin(pin):
@@ -87,7 +114,6 @@ class Transaction():
             return formatted string
         '''
 
-
         account.transaction_history.append(transaction)
         return "Transaction saved successfully"
         
@@ -114,6 +140,9 @@ class Account():
         returns formatted string detailing amount deposited
         '''
 
+        user_data = read_json(user_file)
+        acc_no = str(self.account_number)
+
         if amount:
             new_balance = self.balance + amount
             self.balance = new_balance
@@ -127,6 +156,10 @@ class Account():
                 self.account_number,
                 ending_balance = new_balance
             )
+
+            user_data["users"][acc_no]["balance"] = new_balance
+            write_json(user_data, user_file)
+
             self.transaction_history.append(transaction)
             return f"Your deposit of {amount} is successful"
 
@@ -140,6 +173,8 @@ class Account():
 
         returns formatted string detailing amount withdrawn
         '''
+        user_data = read_json(user_file)
+        acc_no = str(self.account_number)
 
         if amount >= (self.balance - 100):
             new_balance = self.balance - amount
@@ -156,6 +191,10 @@ class Account():
                 self.account_number,
                 ending_balance = new_balance
             )
+
+            user_data["users"][acc_no]["balance"] = new_balance
+            write_json(user_data, user_file)
+
             self.transaction_history.append(transaction)
             return f"Your withdrawal of {amount} is successful"
         else:
@@ -168,7 +207,6 @@ class Account():
 
         returns formatted text detailing account_balance
         '''
-
         return f"You have ${self.balance} in your account"
     
     # Change pin
@@ -187,23 +225,24 @@ class Account():
         '''
 
         account = str(self.account_number)
-        data = read_json()
-        for account in data["users"].keys():
-            if old_pin == data["users"]["account"]["pin"]:
-                if new_pin == old_pin:
-                    return f"Same pin as previous"
-                else:            
-                    try:   
-                        if account:         
-                            data["users"]["account"]["pin"] = new_pin
-                            write_json(data)
-                            return "Pin changed successfully"
-                        else:
-                            return "Account not found. Please create an account"
-                    except Exception as e:
-                        return f"Error accessing key {e}"
-            else:
-                return "Old pin incorrect. Try again"
+        pin_data = read_json(pin_file)
+        for account in pin_data["users"].keys():
+            if int(account) == self.account_number:
+                if old_pin == pin_data["users"][account]["pin"]:
+                    if new_pin == old_pin:
+                        return f"Same pin as previous"
+                    else:            
+                        try:   
+                            if account:         
+                                pin_data["users"][account]["pin"] = new_pin
+                                write_json(pin_data, pin_file)
+                                return "Pin changed successfully"
+                            else:
+                                return "Account not found. Please create an account"
+                        except Exception as e:
+                            return f"Error accessing key {e}"
+                else:
+                    return "Old pin incorrect. Try again"
         
     def update_contact_info(self,new_info):
         '''
@@ -214,9 +253,13 @@ class Account():
 
         returns formatted string
         '''
+        user_data = read_json(user_file)
+        account = str(self.account_number)
 
         if new_info:
             self.contact_info = new_info
+            user_data["users"][account]["contact info"] = new_info
+            write_json(user_data, user_file)
             return f"Contact info updated successfully"
         
     def get_transaction_history(self):
@@ -255,25 +298,26 @@ class Bank():
 
         returns formatted string with account_number
         '''
-    
-        data = read_json()
+        pin_file = "utils.json"
+        pin_data = read_json(pin_file)
+
+        user_file = "users.json"
+        user_data = read_json(user_file)
+
+        
         if owner_name and initial_deposit and pin and contact_info:
             
             creation_time = datetime.now()
             transaction_history = []
-            account_number = data["next_account_number"]
+            account_number = user_data["next_account_number"]
             acc_no = str(account_number)
            
-            new_data = {               
+            pin_data["users"].update({acc_no:{               
                 "pin": pin,
                 "attempts": 0
-            }
+            }})
 
-            dict_data = {
-                acc_no : new_data
-            }
-
-            data["users"].update(dict_data)
+            write_json(pin_data, pin_file)
 
             accounts = Account(
                 owner_name,
@@ -283,11 +327,24 @@ class Bank():
                 creation_time,
                 transaction_history
                 )
+            
+            account_data = {
+                "Account Name": owner_name,
+                "Balance": initial_deposit,
+                "Other info": contact_info,
+                "Created on": creation_time,
+                "Transaction History": transaction_history
+            }
+
+            user_data["users"].update({
+                acc_no: account_data
+            })
+
 
             self.accounts.append(accounts)
-            data["next_account_number"] = account_number + 1
+            user_data["next_account_number"] = account_number + 1
 
-            write_json(data)
+            write_json(user_data, user_file)
 
             return f"Account with account number {account_number:08d} successfully created."
 
@@ -327,10 +384,11 @@ class Bank():
         returns formatted text
         '''
 
-        data = read_json()
-        account = str(account_number)
-        saved_pin = data["users"][account]["pin"]
-        trials = data["users"][account]["attempts"]
+        pin_file = "utils.json"
+        pin_data = read_json(pin_file)
+        acc_no = str(account_number)
+        saved_pin = pin_data["users"][acc_no]["pin"]
+        trials = pin_data["users"][account]["attempts"]
 
         if trials >= (st.session_state.max_trials - 1):
             return "You have exceeded your login attempts. Please reach out to customer care"
@@ -338,14 +396,14 @@ class Bank():
         for account in self.accounts:
             if account_number == account.account_number: 
                 if pin == saved_pin:
-                    data["users"][account]["attempts"] = 0
+                    pin_data["users"][acc_no]["attempts"] = 0
 
-                    write_json(data)
+                    write_json(pin_data, pin_file)
                     return "Login successful"
                 else:
-                    data["users"][account]["attempts"] += 1
+                    pin_data["users"][acc_no]["attempts"] += 1
                     remaining = (st.session_state.max_trials - trials)
-                    write_json(data)
+                    write_json(pin_data, pin_file)
                     return f"Wrong Pin. You have {remaining} chances left"
             
         return "No account number found. Check the account number or Create an account"
@@ -367,6 +425,9 @@ class Bank():
         
         returns formatted string detailing amount transferred
         '''
+        user_data = read_json(user_file)
+        f_acc = str(from_account)
+        t_acc = str(to_account)
 
         source_account = self.find_account(from_account)
         destination_account = self.find_account(to_account)
@@ -401,6 +462,11 @@ class Bank():
                     transaction_sender.generate_receipt()
                     transaction_sender.save_to_history(source_account, transaction_sender)
                     transaction_receiver.save_to_history(destination_account, transaction_receiver)
+
+                    user_data["users"][f_acc]["transaction history"].append(transaction_sender)
+                    user_data["users"][f_acc]["transaction history"].append(transaction_receiver)
+                    write_json(user_data, user_file)
+
                     return f"Transfer of {amount} complete"
             
                 else:
