@@ -133,7 +133,7 @@ if function_option == "Deposit":
         acc_data = users_data["users"][acc_no]
         
         for acc_no in users_data["users"].keys():
-            if st.button("Deposit"):
+            if st.button("Deposit", key=f"deposit_button{users_data["users"][acc_no]["Account Name"]}"):
                 if int(acc_no) == st.session_state.account_number:
                     if amount:
                         if amount >= 100:
