@@ -72,6 +72,7 @@ elif function_option == "Login":
     max_trials = st.session_state.max_trials
     user_file = "user_data"
     users_data = read_json(user_file)
+    st.write(type(users_data))
 
 
 
