@@ -307,6 +307,7 @@ class Bank():
         if owner_name and initial_deposit and pin and contact_info:
             
             creation_time = datetime.now()
+            time_data = creation_time.strftime("%Y-%m-%d %H:%M:%S")
             transaction_history = []
             account_number = user_data["next_account_number"]
             acc_no = str(account_number)
@@ -331,7 +332,7 @@ class Bank():
                 "Account Name": owner_name,
                 "Balance": initial_deposit,
                 "Other info": contact_info,
-                "Created on": creation_time.strftime("%Y-%m-%d %H:%M:%S"),
+                "Created on": time_data,
                 "Transaction History": transaction_history
             }
 
