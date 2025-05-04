@@ -72,13 +72,13 @@ elif function_option == "Login":
     max_trials = st.session_state.max_trials
     user_file = "user_data"
     users_data = read_json(user_file)
-    user_data = users_data["users"]
+
 
 
     if st.button("Login"):
         if account_number and input_pin:
             if len(input_pin) == 4:
-                for acc_no in user_data.keys():
+                for acc_no in users_data["users"].keys():
                     if trial <= (max_trials - 1):
                         if account_number == int(acc_no):
                             pin = hash_pin(input_pin)
