@@ -388,7 +388,7 @@ class Bank():
         pin_data = read_json(pin_file)
         acc_no = str(account_number)
         saved_pin = pin_data["users"][acc_no]["pin"]
-        trials = pin_data["users"][account]["attempts"]
+        trials = pin_data["users"][acc_no]["attempts"]
 
         if trials >= (st.session_state.max_trials - 1):
             return "You have exceeded your login attempts. Please reach out to customer care"
