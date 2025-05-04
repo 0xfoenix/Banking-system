@@ -405,8 +405,7 @@ class Bank():
                     remaining = (st.session_state.max_trials - trials)
                     write_json(pin_data, pin_file)
                     return f"Wrong Pin. You have {remaining} chances left"
-            
-        return "No account number found. Check the account number or Create an account"
+            return "No account number found. Check the account number or Create an account"
         
             
             
