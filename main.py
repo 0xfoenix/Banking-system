@@ -393,8 +393,8 @@ class Bank():
         if trials >= (st.session_state.max_trials - 1):
             return "You have exceeded your login attempts. Please reach out to customer care"
         
-        for account in self.accounts:
-            if account_number == account.account_number: 
+        for acc_no in pin_data["users"].keys():
+            if account_number == int(acc_no): 
                 if pin == saved_pin:
                     pin_data["users"][acc_no]["attempts"] = 0
 
@@ -405,7 +405,7 @@ class Bank():
                     remaining = (st.session_state.max_trials - trials)
                     write_json(pin_data, pin_file)
                     return f"Wrong Pin. You have {remaining} chances left"
-            return "No account number found. Check the account number or Create an account"
+        return "No account number found. Check the account number or Create an account"
         
             
             
