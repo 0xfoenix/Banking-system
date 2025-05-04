@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 import json
-from main import Bank, hash_pin, read_json
+from main import Account, Bank, hash_pin, read_json
+
+user_file = "users.json"
+users_data = read_json(user_file)
 
 st.title("Welcome to the Royal Bank")
     
@@ -116,21 +119,25 @@ elif function_option == "About/Help Information":
 
 # Initialize login
 if st.session_state.login:
-    for account in st.session_state.bank.accounts:
-        if account.account_number == st.session_state.account_number:
-            st.title(f"Welcome to the Royal Bank, {account.account_name}")
+    acc_no = str(st.session_state.account_number)
+    for acc_no in users_data["users"].keys():
+        if int(acc_no) == st.session_state.account_number:
+            st.title(f"Welcome to the Royal Bank, {users_data["users"][acc_no]["Account Name"]}")
 
     
 # Deposit function
 if function_option == "Deposit":
     if st.session_state.account_number:
         amount = st.number_input("Amount", placeholder="Input the amount you want to deposit", min_value=100)
+        acc_no = str(st.session_state.account_number)
+        acc_data = users_data["users"][acc_no]
         
-        for account in st.session_state.bank.accounts:
+        for acc_no in users_data["users"].keys():
             if st.button("Deposit"):
-                if account.account_number == st.session_state.account_number:
+                if int(acc_no) == st.session_state.account_number:
                     if amount:
                         if amount >= 100:
+                            account = Account(**users_data)
                             result = account.deposit(amount)
                             st.success(result)
                         else:
@@ -147,12 +154,15 @@ if function_option == "Deposit":
 elif function_option == "Withdraw":
     if st.session_state.account_number:
         amount = st.number_input("Amount", placeholder="Input the amount you wish to withdraw", min_value=10)
-
-        for account in st.session_state.bank.accounts:
+        acc_no = str(st.session_state.account_number)
+        acc_data = users_data["users"][acc_no]
+        
+        for acc_no in users_data["users"].keys():
             if st.button("Withdraw"):
-                if account.account_number == st.session_state.account_number:
+                if int(acc_no) == st.session_state.account_number:
                     if amount:
                         if amount >=10:
+                            account = Account(**users_data)
                             result = account.withdraw(amount)
                             st.success(result)
                         else:
@@ -170,11 +180,14 @@ elif function_option == "Transfer":
         d_account = st.number_input("Account", placeholder="Input the account you want to transfer to")
         amount = st.number_input("Amount", placeholder="Input the amount you want to transfer")
         s_account = st.session_state.account_number
+        acc_no = str(d_account)
+        acc_data = users_data["users"][acc_no]
+        
             
         if st.button("Transfer"):
             if d_account and amount:
-                for account in st.session_state.bank.accounts:
-                    if d_account == account.account_number:
+                for acc_no in users_data["users"].keys():
+                    if d_account == int(acc_no):
                         if amount > 0:
                             result = st.session_state.bank.transfer(s_account, d_account, amount)
                             st.success(result)
@@ -189,10 +202,14 @@ elif function_option == "Transfer":
 
 # Check balance function
 elif function_option == "Check Balance":
+    acc_no = str(st.session_state.account_number)
+    acc_data = users_data["users"][acc_no]
+    account = Account(**users_data)
+
     if st.session_state.account_number:
         if st.button("Check Balance"):
-            for account in st.session_state.bank.accounts:
-                if account.account_number == st.session_state.account_number:
+            for acc_no in users_data["users"].keys():
+                if int(acc_no) == st.session_state.account_number:
                     result = account.check_balance()
                     st.success(result)
                 else:
@@ -203,10 +220,14 @@ elif function_option == "Check Balance":
 
 # View Transaction history
 elif function_option == "View Transaction history":
+    acc_no = str(st.session_state.account_number)
+    acc_data = users_data["users"][acc_no]
+    account = Account(**users_data)
+
     if st.session_state.account_number:
         if st.button("View tx history"):
-            for account in st.session_state.bank.accounts:
-                if account.account_number == st.session_state.account_number:
+            for acc_no in users_data["users"].keys():
+                if int(acc_no) == st.session_state.account_number:
                     tx_data = account.get_transaction_history()
 
                     tx_df =  pd.DataFrame(tx_data)
@@ -219,8 +240,12 @@ elif function_option == "View Transaction history":
 # Update an account info
 elif function_option == "Update account information":
     if st.session_state.account_number:
-        for account in st.session_state.bank.accounts:
-            if account.account_number == st.session_state.account_number:
+        acc_no = str(st.session_state.account_number)
+        acc_data = users_data["users"][acc_no]
+        account = Account(**users_data)
+
+        for acc_no in users_data["users"].keys():
+            if int(acc_no) == st.session_state.account_number:
 
                 with st.form("Edit contact info"):
                     edit_phone = st.text_input("Phone_number", placeholder="Please input your number", value=account.contact_info["phone"])
@@ -249,14 +274,18 @@ elif function_option == "Update account information":
 
 # Change PIN
 elif function_option == "Change PIN":
+    acc_no = str(st.session_state.account_number)
+    acc_data = users_data["users"][acc_no]
+    account = Account(**users_data)
+
     if st.session_state.account_number:
         i_new_pin = st.text_input("New Pin", placeholder="Please input your new pin", type="password", max_chars=4)
         i_new_pin2 = st.text_input("New Pin", placeholder="Please input your new pin", type="password", max_chars=4)
         i_old_pin = st.text_input("Old Pin", placeholder="Please input your current pin", type="password", max_chars=4)
 
         if st.button("Change PIN"):
-            for account in st.session_state.bank.accounts:
-                if st.session_state.account_number == account.account_number:
+            for acc_no in users_data["users"].keys():
+                if int(acc_no) == st.session_state.account_number:
                         if i_old_pin and i_new_pin and i_new_pin2:
                             old_pin = hash_pin(i_old_pin)
                             new_pin = hash_pin(i_new_pin)
