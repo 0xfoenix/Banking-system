@@ -331,7 +331,7 @@ class Bank():
                 "Account Name": owner_name,
                 "Balance": initial_deposit,
                 "Other info": contact_info,
-                "Created on": creation_time,
+                "Created on": creation_time.isoformat(),
                 "Transaction History": transaction_history
             }
 
