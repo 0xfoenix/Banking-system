@@ -298,10 +298,9 @@ class Bank():
 
         returns formatted string with account_number
         '''
-        pin_file = "utils.json"
+ 
         pin_data = read_json(pin_file)
 
-        user_file = "users.json"
         user_data = read_json(user_file)
 
         
