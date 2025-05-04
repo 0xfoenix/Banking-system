@@ -384,7 +384,6 @@ class Bank():
         returns formatted text
         '''
 
-        pin_file = "utils.json"
         pin_data = read_json(pin_file)
         acc_no = str(account_number)
         saved_pin = pin_data["users"][acc_no]["pin"]
