@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import json
-from main import Bank, hash_pin
+from main import Bank, hash_pin, read_json
 
 st.title("Welcome to the Royal Bank")
     
@@ -70,14 +70,17 @@ elif function_option == "Login":
     
     trial = st.session_state.trial
     max_trials = st.session_state.max_trials
+    user_file = "user_data"
+    users_data = read_json(user_file)
+    user_data = users_data["users"]
 
 
     if st.button("Login"):
         if account_number and input_pin:
             if len(input_pin) == 4:
-                for account in st.session_state.bank.accounts:
+                for acc_no in user_data.keys():
                     if trial <= (max_trials - 1):
-                        if account_number == account.account_number:
+                        if account_number == int(acc_no):
                             pin = hash_pin(input_pin)
                             result = st.session_state.bank.authenticate(account_number, pin)
                             st.success(result)
