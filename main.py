@@ -15,18 +15,19 @@ def read_json():
             data = json.load(f)
             return data
     except FileNotFoundError:
-        data = {"users":{
+        data2 = {"users":{
 
         },
         "next_account_number": 1}
 
         with open("utils.json", "w") as f:
-            json.dump(data, f, indent=4, sort_keys = True)
-            return data
+            json.dump(data2, f, indent=4, sort_keys = True)
+            return data2
 
 def write_json(data):
     with open("utils.json", "w") as f:
         json.dump(data, f, indent=4, sort_keys=True)
+        
 
 def hash_pin(pin):
     b_pin = f"{pin}".encode()
@@ -263,10 +264,7 @@ class Bank():
             account_number = data["next_account_number"]
             acc_no = str(account_number)
            
-            new_data = {
-                
-                # stores the pin hash  and login attempts of the account number
-                
+            new_data = {               
                 "pin": pin,
                 "attempts": 0
             }
@@ -289,9 +287,10 @@ class Bank():
             self.accounts.append(accounts)
             data["next_account_number"] = account_number + 1
 
-            write_json(data)
+            result = write_json(data)
+            st.json(data)
 
-            return f"Account with account number {account_number:08d} successfully created"
+            return f"Account with account number {account_number:08d} successfully created. See {result} here"
 
     # Find account
     def find_account(self, account_number):
