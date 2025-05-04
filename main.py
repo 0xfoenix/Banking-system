@@ -287,9 +287,9 @@ class Bank():
             self.accounts.append(accounts)
             data["next_account_number"] = account_number + 1
 
-            result = write_json(data)
+            write_json(data)
 
-            return f"Account with account number {account_number:08d} successfully created. See {result} here"
+            return f"Account with account number {account_number:08d} successfully created."
 
     # Find account
     def find_account(self, account_number):
