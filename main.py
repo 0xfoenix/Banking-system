@@ -442,7 +442,7 @@ class Bank():
 
         source_account = self.find_account(from_account)
         return source_account
-        
+        '''
         destination_account = self.find_account(to_account)
         
         if source_account and destination_account:
@@ -495,6 +495,7 @@ class Bank():
                 return "Insufficient amount. Please deposit"
         else:
             return "Accounts not found"
+        '''
 
     # Save data      
     def save_data(self, filename):
