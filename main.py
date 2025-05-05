@@ -313,7 +313,7 @@ class Bank():
             creation_time = datetime.now()
             time_data = creation_time.strftime("%Y-%m-%d %H:%M:%S")
             transaction_history = []
-            account_number = user_data["next_account_number"]
+            account_number = int(user_data["next_account_number"])
             acc_no = str(account_number)
            
             pin_data["users"].update({acc_no:{               
