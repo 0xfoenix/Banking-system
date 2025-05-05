@@ -157,7 +157,7 @@ class Account():
                 ending_balance = new_balance
             )
 
-            user_data["users"][acc_no]["balance"] = new_balance
+            user_data["users"][acc_no]["Balance"] = new_balance
             write_json(user_data, user_file)
 
             self.transaction_history.append(transaction)
@@ -192,7 +192,7 @@ class Account():
                 ending_balance = new_balance
             )
 
-            user_data["users"][acc_no]["balance"] = new_balance
+            user_data["users"][acc_no]["Balance"] = new_balance
             write_json(user_data, user_file)
 
             self.transaction_history.append(transaction)
