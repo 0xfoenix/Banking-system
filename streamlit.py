@@ -166,6 +166,7 @@ elif function_option == "Withdraw":
                     if amount:
                         if amount >=10:
                             account = Account(*acc_data)
+                            st.write(account.balance)
                             result = account.withdraw(amount)
                             st.success(result)
                         else:
@@ -183,8 +184,8 @@ elif function_option == "Transfer":
         d_account = st.number_input("Account", placeholder="Input the account you want to transfer to")
         amount = st.number_input("Amount", placeholder="Input the amount you want to transfer")
         s_account = st.session_state.account_number
-        acc_no = str(d_account)
-        acc_data = list(users_data["users"][acc_no].values)
+        d_acc_no = str(d_account)
+        
         Transfer = st.button("Transfer", key=f"transfer_{st.session_state.account_number}")
         
             
