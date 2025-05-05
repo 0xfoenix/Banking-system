@@ -38,7 +38,7 @@ else:
     function_option = st.sidebar.selectbox("What do you want to do today?",
                                            ["Deposit", "Withdraw", "Transfer", "Check Balance",
                                             "View Transaction history", "Update account information",
-                                            "Change PIN", "Find Acount", "Logout"])
+                                            "Change PIN", "Find Account", "Logout"])
 
 # Create New account  
 if function_option == "Create New Account":
