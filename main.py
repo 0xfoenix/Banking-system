@@ -471,7 +471,7 @@ class Bank():
                         d_balance,
                         to_account
                     )
-                    tx_receipt = Transaction(transaction_sender)
+                    tx_receipt = Transaction(*transaction_sender)
 
                     source_account.balance = s_balance
                     destination_account.balance = d_balance
