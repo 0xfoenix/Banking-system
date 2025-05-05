@@ -470,11 +470,12 @@ class Bank():
                         d_balance,
                         to_account
                     )
+                    tx_receipt = Transaction(transaction_sender)
 
                     source_account.balance = s_balance
                     destination_account.balance = d_balance
 
-                    transaction_sender.generate_receipt()
+                    tx_receipt.generate_receipt()
                     transaction_sender.save_to_history(source_account, transaction_sender)
                     transaction_receiver.save_to_history(destination_account, transaction_receiver)
 
