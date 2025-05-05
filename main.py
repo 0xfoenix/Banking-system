@@ -371,7 +371,7 @@ class Bank():
             if acc_no == account.account_number:
                 return account
                 
-        return "Accounts not found"
+        return None
         
     if "max_trials" not in st.session_state:
         st.session_state.max_trials = 3
@@ -433,8 +433,13 @@ class Bank():
         f_acc = str(from_account)
         t_acc = str(to_account)
 
-        source_account = self.find_account(from_account)
-        destination_account = self.find_account(to_account)
+        for account in self.accounts:
+            if from_account == account.account_number:
+                source_account = account
+
+        for account in self.accounts:
+            if to_account == account.account_number:
+                destination_account = account
 
         
         if source_account and destination_account:
