@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import json
+import time
 from main import Account, Bank, hash_pin, read_json
 
 user_file = "users.json"
@@ -61,11 +62,11 @@ if function_option == "Create New Account":
 
         if st.form_submit_button("Create Account"):
             if name and deposit and input_pin and contact_info:
-               pin = hash_pin(input_pin)
-               result = st.session_state.bank.create_account(name, deposit, pin, contact_info)
-               st.success(result)
-
-               st.rerun()
+                pin = hash_pin(input_pin)
+                result = st.session_state.bank.create_account(name, deposit, pin, contact_info)
+                st.success(result)
+                time.sleep(3)
+                st.rerun()
             else:
                st.error("Please input all necessary details")
 
@@ -75,8 +76,9 @@ elif function_option == "Login":
         
     account_number = st.number_input("Account Number", placeholder="Please enter your account number", step=1)
     input_pin = st.text_input("pin", placeholder="Please input your pin", type="password", max_chars=4)
+    acc_nos = str(account_number)
     
-    trial = int(pin_data["users"]["attempts"])
+    
     max_trials = st.session_state.max_trials
     user_file = "users.json"
     users_data = read_json(user_file)
@@ -88,6 +90,8 @@ elif function_option == "Login":
         if account_number and input_pin:
             if len(input_pin) == 4:
                 for acc_no in users_data["users"].keys():
+                    trial = int(pin_data["users"][acc_nos]["attempts"])
+
                     if trial <= (max_trials - 1):
                         if account_number == int(acc_no):
                             pin = hash_pin(input_pin)
