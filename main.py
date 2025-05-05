@@ -452,6 +452,7 @@ class Bank():
 
                     transaction_id = str(uuid.uuid4()) + str(int(time.time()) * 1000)
                     timestamp = datetime.now()
+                    json_timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
                     transaction_sender = (
                         transaction_id,
                         timestamp,
@@ -480,8 +481,28 @@ class Bank():
                     tx_receipt.save_to_history(source_account, transaction_sender)
                     tx_receipt.save_to_history(destination_account, transaction_receiver)
 
-                    user_data["users"][f_acc]["Transaction History"].append(transaction_sender)
-                    user_data["users"][t_acc]["Transaction History"].append(transaction_receiver)
+                    transaction_sender_json = (
+                        transaction_id,
+                        json_timestamp,
+                        "Transfer",
+                        amount,
+                        from_account,
+                        s_balance,
+                        to_account
+                        )
+                    
+                    transaction_receiver_json = (
+                        transaction_id,
+                        timestamp,
+                        "Transfer",
+                        amount,
+                        from_account,
+                        d_balance,
+                        to_account
+                    )
+
+                    user_data["users"][f_acc]["Transaction History"].append(transaction_sender_json)
+                    user_data["users"][t_acc]["Transaction History"].append(transaction_receiver_json)
                     write_json(user_data, user_file)
 
                     result = tx_receipt.generate_receipt()
