@@ -109,7 +109,7 @@ class Transaction():
 
             account(Account): Account Instance where transaction will be stored
 
-            transaction(Transaction): Transaction Instance to be stored
+            transaction(Transaction): Transaction list to be stored
 
             return formatted string
         '''
@@ -365,12 +365,12 @@ class Bank():
     returns the matched Account instance otherwise None
 
     '''
-        
+        acc_no = int(account_number)
 
         for account in self.accounts:
-            if account_number == account.account_number:
+            if acc_no == account.account_number:
                 return account
-            
+                
         return "Accounts not found"
         
     if "max_trials" not in st.session_state:
@@ -445,7 +445,7 @@ class Bank():
 
                     transaction_id = str(uuid.uuid4()) + str(int(time.time()) * 1000)
                     timestamp = datetime.now()
-                    transaction_sender = Transaction(
+                    transaction_sender = (
                         transaction_id,
                         timestamp,
                         "Transfer",
@@ -455,7 +455,7 @@ class Bank():
                         to_account
                         )
                     
-                    transaction_receiver = Transaction(
+                    transaction_receiver = (
                         transaction_id,
                         timestamp,
                         "Transfer",
