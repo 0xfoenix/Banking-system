@@ -208,7 +208,10 @@ class Account():
 
         returns formatted text detailing account_balance
         '''
-        return f"You have ${self.balance} in your account"
+        if self.account_number:
+            return f"You have ${self.balance} in your account"
+        else:
+            return f"Please login"
     
     # Change pin
     def change_pin(self, old_pin, new_pin):
@@ -436,8 +439,8 @@ class Bank():
         if source_account and destination_account:
             if source_account.balance >= amount:
                 if amount > 0:
-                    s_balance, source_account.balance = (source_account.balance - amount)
-                    d_balance, destination_account.balance = (destination_account.balance + amount)
+                    s_balance = (source_account.balance - amount)
+                    d_balance = (destination_account.balance + amount)
 
                     transaction_id = str(uuid.uuid4()) + str(int(time.time()) * 1000)
                     timestamp = datetime.now()
@@ -461,6 +464,9 @@ class Bank():
                         to_account
                     )
 
+                    source_account.balance = s_balance
+                    destination_account.balance = d_balance
+                    
                     transaction_sender.generate_receipt()
                     transaction_sender.save_to_history(source_account, transaction_sender)
                     transaction_receiver.save_to_history(destination_account, transaction_receiver)
