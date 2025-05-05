@@ -334,7 +334,7 @@ class Bank():
             
             account_data = {
                 "Account Name": owner_name,
-                "Account Number": account_number,
+                "Account Number": acc_no,
                 "Balance": initial_deposit,
                 "Other info": contact_info,
                 "Created on": time_data,
@@ -370,7 +370,7 @@ class Bank():
         acc_no = str(account_number)
 
         acc_data = list(user_data["users"][acc_no].values())
-        acc = Account(acc_data)
+        acc = Account(*acc_data)
         self.accounts.append(acc)
 
         for account in self.accounts:
@@ -475,7 +475,7 @@ class Bank():
                     source_account.balance = s_balance
                     destination_account.balance = d_balance
 
-                    
+
                     transaction_sender.save_to_history(source_account, transaction_sender)
                     transaction_receiver.save_to_history(destination_account, transaction_receiver)
 
