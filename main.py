@@ -163,7 +163,7 @@ class Account():
             self.transaction_history.append(transaction)
             return f"Your deposit of {amount} is successful"
 
-    # Witdraw
+    # Withdraw
     def withdraw(self, amount):
         '''
         withdraw: Function to remove money into your account without Transfer
@@ -432,11 +432,13 @@ class Bank():
         source_account = self.find_account(from_account)
         destination_account = self.find_account(to_account)
 
-        s_balance = source_account.balance - amount
-        d_balance = destination_account.balance + amount
+        
         if source_account and destination_account:
-            if (source_account.balance + 10) >= amount:
+            if source_account.balance >= amount:
                 if amount > 0:
+                    s_balance, source_account.balance = (source_account.balance - amount)
+                    d_balance, destination_account.balance = (destination_account.balance + amount)
+
                     transaction_id = str(uuid.uuid4()) + str(int(time.time()) * 1000)
                     timestamp = datetime.now()
                     transaction_sender = Transaction(
@@ -464,7 +466,7 @@ class Bank():
                     transaction_receiver.save_to_history(destination_account, transaction_receiver)
 
                     user_data["users"][f_acc]["Transaction History"].append(transaction_sender)
-                    user_data["users"][f_acc]["Transaction History"].append(transaction_receiver)
+                    user_data["users"][t_acc]["Transaction History"].append(transaction_receiver)
                     write_json(user_data, user_file)
 
                     return f"Transfer of {amount} complete"
