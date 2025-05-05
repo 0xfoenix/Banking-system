@@ -406,7 +406,7 @@ class Bank():
                     write_json(pin_data, pin_file)
                     return "Login successful"
                 else:
-                    pin_data["users"][acc_no]["attempts"] += 1
+                    pin_data["users"][acc_no]["attempts"] = int(pin_data["users"][acc_no]["attempts"]) + 1
                     remaining = (st.session_state.max_trials - trials)
                     write_json(pin_data, pin_file)
                     return f"Wrong Pin. You have {remaining} chances left"
