@@ -6,6 +6,9 @@ from main import Account, Bank, hash_pin, read_json
 user_file = "users.json"
 users_data = read_json(user_file)
 
+pin_file = "utils.json"
+pin_data = read_json(pin_file)
+
 st.title("Welcome to the Royal Bank")
     
 # Initialize bank
@@ -71,7 +74,7 @@ elif function_option == "Login":
     account_number = st.number_input("Account Number", placeholder="Please enter your account number", step=1)
     input_pin = st.text_input("pin", placeholder="Please input your pin", type="password", max_chars=4)
     
-    trial = st.session_state.trial
+    trial = int(pin_data["users"]["attempts"])
     max_trials = st.session_state.max_trials
     user_file = "users.json"
     users_data = read_json(user_file)
