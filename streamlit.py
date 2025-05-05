@@ -198,8 +198,10 @@ elif function_option == "Transfer":
                 for acc_no in users_data["users"].keys():
                     if d_account == int(acc_no):
                         if amount > 0:
-                            result = st.session_state.bank.transfer(s_account, d_account, amount)
-                            st.success(result)
+                            result, message = st.session_state.bank.transfer(s_account, d_account, amount)
+                            st.success(message)
+
+                            st.write(result)
                         else:
                             st.info("Please enter a valid amount to withdraw")
             else:
