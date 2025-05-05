@@ -462,8 +462,8 @@ class Bank():
                     transaction_sender.save_to_history(source_account, transaction_sender)
                     transaction_receiver.save_to_history(destination_account, transaction_receiver)
 
-                    user_data["users"][f_acc]["transaction history"].append(transaction_sender)
-                    user_data["users"][f_acc]["transaction history"].append(transaction_receiver)
+                    user_data["users"][f_acc]["Transaction History"].append(transaction_sender)
+                    user_data["users"][f_acc]["Transaction History"].append(transaction_receiver)
                     write_json(user_data, user_file)
 
                     return f"Transfer of {amount} complete"
