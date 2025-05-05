@@ -477,8 +477,8 @@ class Bank():
                     destination_account.balance = d_balance
 
 
-                    transaction_sender.save_to_history(source_account, transaction_sender)
-                    transaction_receiver.save_to_history(destination_account, transaction_receiver)
+                    tx_receipt.save_to_history(source_account, transaction_sender)
+                    tx_receipt.save_to_history(destination_account, transaction_receiver)
 
                     user_data["users"][f_acc]["Transaction History"].append(transaction_sender)
                     user_data["users"][t_acc]["Transaction History"].append(transaction_receiver)
