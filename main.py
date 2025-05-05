@@ -370,6 +370,7 @@ class Bank():
         acc_no = str(account_number)
 
         acc_data = list(user_data["users"][acc_no].values())
+        return acc_data
         acc = Account(*acc_data)
         self.accounts.append(acc)
 
