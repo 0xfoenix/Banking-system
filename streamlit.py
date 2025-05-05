@@ -180,8 +180,8 @@ elif function_option == "Withdraw":
 # Transfer function
 elif function_option == "Transfer":
     if st.session_state.account_number:
-        d_account = st.number_input("Account", placeholder="Input the account you want to transfer to")
-        amount = st.number_input("Amount", placeholder="Input the amount you want to transfer")
+        d_account = st.number_input("Account", placeholder="Input the account you want to transfer to", step=1)
+        amount = st.number_input("Amount", placeholder="Input the amount you want to transfer", step=1)
         s_account = st.session_state.account_number
         d_acc_no = str(d_account)
         
