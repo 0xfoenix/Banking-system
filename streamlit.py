@@ -138,7 +138,6 @@ if function_option == "Deposit":
                 if int(acc_no) == st.session_state.account_number:
                     if amount:
                         if amount >= 100:
-                            st.write(st.session_state.account_number)
                             account = Account(*acc_data)
                             result = account.deposit(amount)
                             st.success(result)
