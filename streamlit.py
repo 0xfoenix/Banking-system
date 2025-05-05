@@ -148,7 +148,7 @@ if function_option == "Deposit":
                 if int(acc_no) == st.session_state.account_number:
                     if amount:
                         if amount >= 100:
-                            account = Account(**users_data)
+                            account = Account(**acc_data)
                             result = account.deposit(amount)
                             st.success(result)
                         else:
@@ -173,7 +173,7 @@ elif function_option == "Withdraw":
                 if int(acc_no) == st.session_state.account_number:
                     if amount:
                         if amount >=10:
-                            account = Account(**users_data)
+                            account = Account(**acc_data)
                             result = account.withdraw(amount)
                             st.success(result)
                         else:
@@ -215,7 +215,7 @@ elif function_option == "Transfer":
 elif function_option == "Check Balance":
     acc_no = str(st.session_state.account_number)
     acc_data = users_data["users"][acc_no]
-    account = Account(**users_data)
+    account = Account(**acc_data)
 
     if st.session_state.account_number:
         if Check_Bal:
@@ -233,7 +233,7 @@ elif function_option == "Check Balance":
 elif function_option == "View Transaction history":
     acc_no = str(st.session_state.account_number)
     acc_data = users_data["users"][acc_no]
-    account = Account(**users_data)
+    account = Account(**acc_data)
 
     if st.session_state.account_number:
         if View_tx:
@@ -253,7 +253,7 @@ elif function_option == "Update account information":
     if st.session_state.account_number:
         acc_no = str(st.session_state.account_number)
         acc_data = users_data["users"][acc_no]
-        account = Account(**users_data)
+        account = Account(**acc_data)
 
         for acc_no in users_data["users"].keys():
             if int(acc_no) == st.session_state.account_number:
@@ -287,7 +287,7 @@ elif function_option == "Update account information":
 elif function_option == "Change PIN":
     acc_no = str(st.session_state.account_number)
     acc_data = users_data["users"][acc_no]
-    account = Account(**users_data)
+    account = Account(**acc_data)
 
     if st.session_state.account_number:
         i_new_pin = st.text_input("New Pin", placeholder="Please input your new pin", type="password", max_chars=4)
