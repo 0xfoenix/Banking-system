@@ -122,15 +122,15 @@ if st.session_state.login:
     acc_no = str(st.session_state.account_number)
     for acc_no in users_data["users"].keys():
         if int(acc_no) == st.session_state.account_number:
-            st.title(f"Welcome to the Royal Bank, {users_data["users"][acc_no]["Account Name"]}")
-            Deposit = st.button("Deposit", key=st.session_state.account_number)
-            Withdraw = st.button("Withdraw", key=st.session_state.account_number)
-            Transfer = st.button("Transfer", key=st.session_state.account_number)
-            Check_Bal = st.button("Check Balance", key=st.session_state.account_number)
-            View_tx = st.button("View tx history", key=st.session_state.account_number)
-            Update = st.form_submit_button("Update Account Info", key=st.session_state.account_number)
-            Change_PIN = st.button("Change PIN", key=st.session_state.account_number)
-            Logout = st.button("Logout", key=st.session_state.account_number)
+            st.title(f"Welcome, {users_data["users"][acc_no]["Account Name"]}")
+            Deposit = st.button("Deposit", key=f"deposit_{st.session_state.account_number}")
+            Withdraw = st.button("Withdraw", key=f"withdraw_{st.session_state.account_number}")
+            Transfer = st.button("Transfer", key=f"transfer_{st.session_state.account_number}")
+            Check_Bal = st.button("Check Balance", key=f"check_bal_{st.session_state.account_number}")
+            View_tx = st.button("View tx history", key=f"view_tx_{st.session_state.account_number}")
+            Update = st.form_submit_button("Update Account Info", key=f"update_{st.session_state.account_number}")
+            Change_PIN = st.button("Change PIN", key=f"change_pin_{st.session_state.account_number}")
+            Logout = st.button("Logout", key=f"logout_{st.session_state.account_numbe}"r)
 
 
 
