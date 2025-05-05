@@ -64,6 +64,8 @@ if function_option == "Create New Account":
                pin = hash_pin(input_pin)
                result = st.session_state.bank.create_account(name, deposit, pin, contact_info)
                st.success(result)
+
+               st.rerun()
             else:
                st.error("Please input all necessary details")
 
