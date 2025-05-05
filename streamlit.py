@@ -145,8 +145,6 @@ if function_option == "Deposit":
                             st.info("Please increase deposit amount")
                     else:
                         st.info("Please input a valid amount")
-                else:
-                    st.info("Account not found. Please create an account")
     else:
         st.info("Please log in")
 
@@ -172,8 +170,6 @@ elif function_option == "Withdraw":
                             st.info("Please increase amount to withdraw")
                     else:
                         st.info("Please input a valid amount")
-                else:
-                    st.warning("Account not found. Please create an account or login")
     else:
         st.warning("Please log in or Create an account")
     
@@ -197,8 +193,6 @@ elif function_option == "Transfer":
                             st.success(result)
                         else:
                             st.info("Please enter a valid amount to withdraw")
-                    else:
-                        st.warning("Account doesn't exist. Please check the account number again")
             else:
                 st.warning("Please input the necessary details")
     else:
@@ -218,8 +212,7 @@ elif function_option == "Check Balance":
                 if int(acc_no) == st.session_state.account_number:
                     result = account.check_balance()
                     st.success(result)
-                else:
-                    st.warning("Account not found. Please login or create an account")
+                
         
     else:
         st.warning("Please login or create an account")
@@ -238,11 +231,9 @@ elif function_option == "View Transaction history":
                     tx_data = account.get_transaction_history()
 
                     st.write(tx_data)
-                    
-                else:
-                    st.info("Account not found. Please login or create an account")
-        else:
-            st.info("Please login or create an account")
+                
+    else:
+        st.info("Please login or create an account")
     
 # Update an account info
 elif function_option == "Update account information":
@@ -274,9 +265,6 @@ elif function_option == "Update account information":
                             st.success(result)
                         else:
                             st.info("Please input the necessary details")
-            
-            else:
-                st.info("Account not found. Please create an account or login")
     else:
         st.info("Please create an account or login")
 
@@ -307,9 +295,6 @@ elif function_option == "Change PIN":
                                 st.info("Pin does not match")
                         else:
                             st.info("Please input pin")
-                        
-                else:
-                    st.info("Account not found. Please create an account or log in")
     else:
         st.info("Please create a new account or login")
 
