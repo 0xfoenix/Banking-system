@@ -475,7 +475,7 @@ class Bank():
                     source_account.balance = s_balance
                     destination_account.balance = d_balance
 
-                    tx_receipt.generate_receipt()
+                    
                     transaction_sender.save_to_history(source_account, transaction_sender)
                     transaction_receiver.save_to_history(destination_account, transaction_receiver)
 
@@ -483,7 +483,9 @@ class Bank():
                     user_data["users"][t_acc]["Transaction History"].append(transaction_receiver)
                     write_json(user_data, user_file)
 
-                    return f"Transfer of {amount} complete"
+                    result = tx_receipt.generate_receipt()
+
+                    return result, f"Transfer successful"
             
                 else:
                     return "Invalid amount"
