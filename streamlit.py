@@ -123,17 +123,6 @@ if st.session_state.login:
     for acc_no in users_data["users"].keys():
         if int(acc_no) == st.session_state.account_number:
             st.title(f"Welcome, {users_data["users"][acc_no]["Account Name"]}")
-            Deposit = st.button("Deposit", key=f"deposit_{st.session_state.account_number}")
-            Withdraw = st.button("Withdraw", key=f"withdraw_{st.session_state.account_number}")
-            Transfer = st.button("Transfer", key=f"transfer_{st.session_state.account_number}")
-            Check_Bal = st.button("Check Balance", key=f"check_bal_{st.session_state.account_number}")
-            View_tx = st.button("View tx history", key=f"view_tx_{st.session_state.account_number}")
-            Update = st.form_submit_button("Update Account Info", key=f"update_{st.session_state.account_number}")
-            Change_PIN = st.button("Change PIN", key=f"change_pin_{st.session_state.account_number}")
-            Logout = st.button("Logout", key=f"logout_{st.session_state.account_number}")
-
-
-
 
     
 # Deposit function
@@ -142,6 +131,7 @@ if function_option == "Deposit":
         amount = st.number_input("Amount", placeholder="Input the amount you want to deposit", min_value=100)
         acc_no = str(st.session_state.account_number)
         acc_data = users_data["users"][acc_no]
+        Deposit = st.button("Deposit", key=f"deposit_{st.session_state.account_number}")
         
         for acc_no in users_data["users"].keys():
             if Deposit:
@@ -167,6 +157,7 @@ elif function_option == "Withdraw":
         amount = st.number_input("Amount", placeholder="Input the amount you wish to withdraw", min_value=10)
         acc_no = str(st.session_state.account_number)
         acc_data = users_data["users"][acc_no]
+        Withdraw = st.button("Withdraw", key=f"withdraw_{st.session_state.account_number}")
         
         for acc_no in users_data["users"].keys():
             if Withdraw:
@@ -193,6 +184,7 @@ elif function_option == "Transfer":
         s_account = st.session_state.account_number
         acc_no = str(d_account)
         acc_data = users_data["users"][acc_no]
+        Transfer = st.button("Transfer", key=f"transfer_{st.session_state.account_number}")
         
             
         if Transfer:
@@ -216,6 +208,8 @@ elif function_option == "Check Balance":
     acc_no = str(st.session_state.account_number)
     acc_data = users_data["users"][acc_no]
     account = Account(**acc_data)
+    Check_Bal = st.button("Check Balance", key=f"check_bal_{st.session_state.account_number}")
+
 
     if st.session_state.account_number:
         if Check_Bal:
@@ -234,6 +228,7 @@ elif function_option == "View Transaction history":
     acc_no = str(st.session_state.account_number)
     acc_data = users_data["users"][acc_no]
     account = Account(**acc_data)
+    View_tx = st.button("View tx history", key=f"view_tx_{st.session_state.account_number}")
 
     if st.session_state.account_number:
         if View_tx:
@@ -254,6 +249,7 @@ elif function_option == "Update account information":
         acc_no = str(st.session_state.account_number)
         acc_data = users_data["users"][acc_no]
         account = Account(**acc_data)
+        Update = st.form_submit_button("Update Account Info")
 
         for acc_no in users_data["users"].keys():
             if int(acc_no) == st.session_state.account_number:
@@ -288,6 +284,7 @@ elif function_option == "Change PIN":
     acc_no = str(st.session_state.account_number)
     acc_data = users_data["users"][acc_no]
     account = Account(**acc_data)
+    Change_PIN = st.button("Change PIN", key=f"change_pin_{st.session_state.account_number}")
 
     if st.session_state.account_number:
         i_new_pin = st.text_input("New Pin", placeholder="Please input your new pin", type="password", max_chars=4)
@@ -317,6 +314,8 @@ elif function_option == "Change PIN":
     
 # Log out
 elif function_option == "Logout":
+    Logout = st.button("Logout", key=f"logout_{st.session_state.account_number}")
+
     if st.session_state.account_number:
         if Logout:
             st.session_state.login = False
