@@ -123,6 +123,17 @@ if st.session_state.login:
     for acc_no in users_data["users"].keys():
         if int(acc_no) == st.session_state.account_number:
             st.title(f"Welcome to the Royal Bank, {users_data["users"][acc_no]["Account Name"]}")
+            Deposit = st.button("Deposit", key=st.session_state.account_number)
+            Withdraw = st.button("Withdraw", key=st.session_state.account_number)
+            Transfer = st.button("Transfer", key=st.session_state.account_number)
+            Check_Bal = st.button("Check Balance", key=st.session_state.account_number)
+            View_tx = st.button("View tx history", key=st.session_state.account_number)
+            Update = st.form_submit_button("Update Account Info", key=st.session_state.account_number)
+            Change_PIN = st.button("Change PIN", key=st.session_state.account_number)
+            Logout = st.button("Logout", key=st.session_state.account_number)
+
+
+
 
     
 # Deposit function
@@ -133,7 +144,7 @@ if function_option == "Deposit":
         acc_data = users_data["users"][acc_no]
         
         for acc_no in users_data["users"].keys():
-            if st.button("Deposit", key=f"deposit_button{users_data["users"][acc_no]["Account Name"]}"):
+            if Deposit:
                 if int(acc_no) == st.session_state.account_number:
                     if amount:
                         if amount >= 100:
@@ -158,7 +169,7 @@ elif function_option == "Withdraw":
         acc_data = users_data["users"][acc_no]
         
         for acc_no in users_data["users"].keys():
-            if st.button("Withdraw"):
+            if Withdraw:
                 if int(acc_no) == st.session_state.account_number:
                     if amount:
                         if amount >=10:
@@ -184,7 +195,7 @@ elif function_option == "Transfer":
         acc_data = users_data["users"][acc_no]
         
             
-        if st.button("Transfer"):
+        if Transfer:
             if d_account and amount:
                 for acc_no in users_data["users"].keys():
                     if d_account == int(acc_no):
@@ -207,7 +218,7 @@ elif function_option == "Check Balance":
     account = Account(**users_data)
 
     if st.session_state.account_number:
-        if st.button("Check Balance"):
+        if Check_Bal:
             for acc_no in users_data["users"].keys():
                 if int(acc_no) == st.session_state.account_number:
                     result = account.check_balance()
@@ -225,7 +236,7 @@ elif function_option == "View Transaction history":
     account = Account(**users_data)
 
     if st.session_state.account_number:
-        if st.button("View tx history"):
+        if View_tx:
             for acc_no in users_data["users"].keys():
                 if int(acc_no) == st.session_state.account_number:
                     tx_data = account.get_transaction_history()
@@ -253,7 +264,7 @@ elif function_option == "Update account information":
                     edit_next_of_kin = st.text_input("Next of Kin(Optional)", placeholder="Please add the name of your next of kin", value=account.contact_info["next of kin"])
                     edit_next_of_kin_phone = st.text_input("Next of Kin phone(Optional)", placeholder="Please add the phone of your next of kin", value=account.contact_info["next of kin phone"])
 
-                    if st.form_submit_button("Edit Info"):
+                    if Update:
                         if edit_phone and edit_address and edit_next_of_kin and edit_next_of_kin_phone:
                             new_info = {
                                 edit_phone,
@@ -283,7 +294,7 @@ elif function_option == "Change PIN":
         i_new_pin2 = st.text_input("New Pin", placeholder="Please input your new pin", type="password", max_chars=4)
         i_old_pin = st.text_input("Old Pin", placeholder="Please input your current pin", type="password", max_chars=4)
 
-        if st.button("Change PIN"):
+        if Change_PIN:
             for acc_no in users_data["users"].keys():
                 if int(acc_no) == st.session_state.account_number:
                         if i_old_pin and i_new_pin and i_new_pin2:
@@ -307,7 +318,7 @@ elif function_option == "Change PIN":
 # Log out
 elif function_option == "Logout":
     if st.session_state.account_number:
-        if st.button("Logout"):
+        if Logout:
             st.session_state.login = False
             st.session_state.account_number = None
             st.rerun()
