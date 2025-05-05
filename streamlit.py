@@ -38,7 +38,7 @@ else:
     function_option = st.sidebar.selectbox("What do you want to do today?",
                                            ["Deposit", "Withdraw", "Transfer", "Check Balance",
                                             "View Transaction history", "Update account information",
-                                            "Change PIN", "Logout"])
+                                            "Change PIN", "Find Acount", "Logout"])
 
 # Create New account  
 if function_option == "Create New Account":
@@ -308,6 +308,14 @@ elif function_option == "Change PIN":
                             st.info("Please input pin")
     else:
         st.info("Please create a new account or login")
+
+elif function_option == "Find Account":
+    Find = st.button("Logout", key=f"find_{st.session_state.account_number}")
+
+    if st.session_state.account_number:
+        if Find:
+            result =st.session_state.bank.find_account(st.session_state.account_number)
+            st.write(result)
 
     
 # Log out
