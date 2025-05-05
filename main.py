@@ -370,7 +370,7 @@ class Bank():
         acc_no = str(account_number)
 
         acc_data = list(user_data["users"][acc_no].values())
-        return acc_data
+        
         acc = Account(*acc_data)
         self.accounts.append(acc)
 
@@ -441,8 +441,7 @@ class Bank():
         t_acc = str(to_account)
 
         source_account = self.find_account(from_account)
-        return source_account
-        '''
+        
         destination_account = self.find_account(to_account)
         
         if source_account and destination_account:
@@ -495,7 +494,6 @@ class Bank():
                 return "Insufficient amount. Please deposit"
         else:
             return "Accounts not found"
-        '''
 
     # Save data      
     def save_data(self, filename):
