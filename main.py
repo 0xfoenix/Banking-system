@@ -493,7 +493,7 @@ class Bank():
                     
                     transaction_receiver_json = (
                         transaction_id,
-                        son_timestamp,
+                        json_timestamp,
                         "Transfer",
                         amount,
                         from_account,
