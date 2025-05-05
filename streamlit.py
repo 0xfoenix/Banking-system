@@ -237,8 +237,8 @@ elif function_option == "View Transaction history":
                 if int(acc_no) == st.session_state.account_number:
                     tx_data = account.get_transaction_history()
 
-                    tx_df =  pd.DataFrame(tx_data)
-                    st.dataframe(tx_df)
+                    st.write(tx_data)
+                    
                 else:
                     st.info("Account not found. Please login or create an account")
         else:
