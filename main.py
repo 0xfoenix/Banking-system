@@ -370,8 +370,8 @@ class Bank():
         for account in self.accounts:
             if account_number == account.account_number:
                 return account
-            else:
-                return "Accounts not found"
+            
+        return "Accounts not found"
         
     if "max_trials" not in st.session_state:
         st.session_state.max_trials = 3
