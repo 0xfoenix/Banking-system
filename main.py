@@ -370,7 +370,8 @@ class Bank():
         for account in self.accounts:
             if account_number == account.account_number:
                 return account
-        return None
+            else:
+                return "Accounts not found"
         
     if "max_trials" not in st.session_state:
         st.session_state.max_trials = 3
@@ -466,7 +467,7 @@ class Bank():
 
                     source_account.balance = s_balance
                     destination_account.balance = d_balance
-                    
+
                     transaction_sender.generate_receipt()
                     transaction_sender.save_to_history(source_account, transaction_sender)
                     transaction_receiver.save_to_history(destination_account, transaction_receiver)
