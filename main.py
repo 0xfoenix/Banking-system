@@ -330,6 +330,7 @@ class Bank():
             
             account_data = {
                 "Account Name": owner_name,
+                "Account Number": account_number,
                 "Balance": initial_deposit,
                 "Other info": contact_info,
                 "Created on": time_data,
