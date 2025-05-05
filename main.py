@@ -365,7 +365,13 @@ class Bank():
     returns the matched Account instance otherwise None
 
     '''
-        acc_no = int(account_number)
+        user_data = read_json(user_file)
+
+        acc_no = str(account_number)
+
+        acc_data = list(user_data["users"][acc_no].values())
+        acc = Account(acc_data)
+        self.accounts.append(acc)
 
         for account in self.accounts:
             if acc_no == account.account_number:
@@ -433,14 +439,9 @@ class Bank():
         f_acc = str(from_account)
         t_acc = str(to_account)
 
-        for account in self.accounts:
-            if from_account == account.account_number:
-                source_account = account
-
-        for account in self.accounts:
-            if to_account == account.account_number:
-                destination_account = account
-
+        source_account = self.find_account(from_account)
+        
+        destination_account = self.find_account(to_account)
         
         if source_account and destination_account:
             if source_account.balance >= amount:
