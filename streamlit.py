@@ -310,7 +310,7 @@ elif function_option == "Change PIN":
         st.info("Please create a new account or login")
 
 elif function_option == "Find Account":
-    Find = st.button("Logout", key=f"find_{st.session_state.account_number}")
+    Find = st.button("Find Account", key=f"find_{st.session_state.account_number}")
 
     if st.session_state.account_number:
         if Find:
