@@ -138,6 +138,7 @@ if function_option == "Deposit":
                 if int(acc_no) == st.session_state.account_number:
                     if amount:
                         if amount >= 100:
+                            st.write(st.ssession_state.account_number)
                             account = Account(*acc_data)
                             result = account.deposit(amount)
                             st.success(result)
@@ -287,9 +288,10 @@ elif function_option == "Change PIN":
     Change_PIN = st.button("Change PIN", key=f"change_pin_{st.session_state.account_number}")
 
     if st.session_state.account_number:
-        i_new_pin = st.text_input("New Pin", placeholder="Please input your new pin", type="password", max_chars=4)
-        i_new_pin2 = st.text_input("New Pin", placeholder="Please input your new pin", type="password", max_chars=4)
-        i_old_pin = st.text_input("Old Pin", placeholder="Please input your current pin", type="password", max_chars=4)
+        i_old_pin = st.text_input("Old Pin", placeholder="Please input your current pin", type="password", max_chars=4, key=f"old_pin_{st.session_state.account_number}")
+        i_new_pin = st.text_input("New Pin", placeholder="Please input your new pin", type="password", max_chars=4, key=f"new_pin_{st.session_state.account_number}")
+        i_new_pin2 = st.text_input("New Pin", placeholder="Enter your new pin again", type="password", max_chars=4, key=f"new_pin2{st.session_state.account_number}")
+        
 
         if Change_PIN:
             for acc_no in users_data["users"].keys():
