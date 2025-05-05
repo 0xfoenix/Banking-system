@@ -130,7 +130,7 @@ if function_option == "Deposit":
     if st.session_state.account_number:
         amount = st.number_input("Amount", placeholder="Input the amount you want to deposit", min_value=100)
         acc_no = str(st.session_state.account_number)
-        acc_data = users_data["users"][acc_no]
+        acc_data = list(users_data["users"][acc_no].values())
         Deposit = st.button("Deposit", key=f"deposit_{st.session_state.account_number}")
         
         for acc_no in users_data["users"].keys():
@@ -138,7 +138,7 @@ if function_option == "Deposit":
                 if int(acc_no) == st.session_state.account_number:
                     if amount:
                         if amount >= 100:
-                            account = Account(**acc_data)
+                            account = Account(*acc_data)
                             result = account.deposit(amount)
                             st.success(result)
                         else:
@@ -156,7 +156,7 @@ elif function_option == "Withdraw":
     if st.session_state.account_number:
         amount = st.number_input("Amount", placeholder="Input the amount you wish to withdraw", min_value=10)
         acc_no = str(st.session_state.account_number)
-        acc_data = users_data["users"][acc_no]
+        acc_data = list(users_data["users"][acc_no].values())
         Withdraw = st.button("Withdraw", key=f"withdraw_{st.session_state.account_number}")
         
         for acc_no in users_data["users"].keys():
@@ -164,7 +164,7 @@ elif function_option == "Withdraw":
                 if int(acc_no) == st.session_state.account_number:
                     if amount:
                         if amount >=10:
-                            account = Account(**acc_data)
+                            account = Account(*acc_data)
                             result = account.withdraw(amount)
                             st.success(result)
                         else:
@@ -183,7 +183,7 @@ elif function_option == "Transfer":
         amount = st.number_input("Amount", placeholder="Input the amount you want to transfer")
         s_account = st.session_state.account_number
         acc_no = str(d_account)
-        acc_data = users_data["users"][acc_no]
+        acc_data = list(users_data["users"][acc_no].values)
         Transfer = st.button("Transfer", key=f"transfer_{st.session_state.account_number}")
         
             
@@ -206,8 +206,8 @@ elif function_option == "Transfer":
 # Check balance function
 elif function_option == "Check Balance":
     acc_no = str(st.session_state.account_number)
-    acc_data = users_data["users"][acc_no]
-    account = Account(**acc_data)
+    acc_data = list(users_data["users"][acc_no].values())
+    account = Account(*acc_data)
     Check_Bal = st.button("Check Balance", key=f"check_bal_{st.session_state.account_number}")
 
 
@@ -226,8 +226,8 @@ elif function_option == "Check Balance":
 # View Transaction history
 elif function_option == "View Transaction history":
     acc_no = str(st.session_state.account_number)
-    acc_data = users_data["users"][acc_no]
-    account = Account(**acc_data)
+    acc_data = list(users_data["users"][acc_no].values())
+    account = Account(*acc_data)
     View_tx = st.button("View tx history", key=f"view_tx_{st.session_state.account_number}")
 
     if st.session_state.account_number:
@@ -248,7 +248,7 @@ elif function_option == "Update account information":
     if st.session_state.account_number:
         acc_no = str(st.session_state.account_number)
         acc_data = list(users_data["users"][acc_no].values())
-        account = Account(**acc_data)
+        account = Account(*acc_data)
         Update = st.form_submit_button("Update Account Info")
 
         for acc_no in users_data["users"].keys():
@@ -282,8 +282,8 @@ elif function_option == "Update account information":
 # Change PIN
 elif function_option == "Change PIN":
     acc_no = str(st.session_state.account_number)
-    acc_data = users_data["users"][acc_no]
-    account = Account(**acc_data)
+    acc_data = list(users_data["users"][acc_no].values())
+    account = Account(*acc_data)
     Change_PIN = st.button("Change PIN", key=f"change_pin_{st.session_state.account_number}")
 
     if st.session_state.account_number:
