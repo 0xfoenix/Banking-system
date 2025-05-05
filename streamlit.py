@@ -130,7 +130,7 @@ if st.session_state.login:
             View_tx = st.button("View tx history", key=f"view_tx_{st.session_state.account_number}")
             Update = st.form_submit_button("Update Account Info", key=f"update_{st.session_state.account_number}")
             Change_PIN = st.button("Change PIN", key=f"change_pin_{st.session_state.account_number}")
-            Logout = st.button("Logout", key=f"logout_{st.session_state.account_numbe}"r)
+            Logout = st.button("Logout", key=f"logout_{st.session_state.account_number})
 
 
 
