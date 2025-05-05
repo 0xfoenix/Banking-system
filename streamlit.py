@@ -247,7 +247,7 @@ elif function_option == "View Transaction history":
 elif function_option == "Update account information":
     if st.session_state.account_number:
         acc_no = str(st.session_state.account_number)
-        acc_data = users_data["users"][acc_no]
+        acc_data = list(users_data["users"][acc_no].values())
         account = Account(**acc_data)
         Update = st.form_submit_button("Update Account Info")
 
