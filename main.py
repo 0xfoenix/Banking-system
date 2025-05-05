@@ -176,7 +176,7 @@ class Account():
         user_data = read_json(user_file)
         acc_no = str(self.account_number)
 
-        if amount >= (self.balance - 100):
+        if amount > self.balance:
             new_balance = self.balance - amount
             self.balance = new_balance
 
